@@ -1,5 +1,7 @@
 package com.petshopspring.petshop.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,30 @@ public class StockService {
 		stock.addItem(itemStock);
 		stockRepository.save(stock);
 
+	}
+	
+	
+	
+	public List<ItemStockDto> getAllProducts(){
+	
+		List<Stock> result = stockRepository.findAll();
+		List<ItemStockDto> allProducts = new ArrayList<>();
+		
+		for(Stock stock : result) {
+			// percorrer os itens do estoque
+			for(ItemStock item : stock.getItens()) {
+			
+				ItemStockDto dto = new ItemStockDto();
+				dto.setProductId(item.getProduct().getId());
+				dto.setQuantity(item.getQuantity());
+				allProducts.add(dto);
+			}
+			
+			
+		}
+		
+		return allProducts;
+	
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)

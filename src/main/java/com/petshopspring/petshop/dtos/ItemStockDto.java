@@ -1,9 +1,14 @@
 package com.petshopspring.petshop.dtos;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class ItemStockDto {
 
+	@NotNull
 	private Long productId;
+	
+	@Positive(message = "A quantidade deve ser um número positivo.")
 	private int quantity;
 
 	public ItemStockDto() {

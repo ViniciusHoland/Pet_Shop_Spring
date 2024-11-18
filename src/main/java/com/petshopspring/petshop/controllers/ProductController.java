@@ -25,9 +25,7 @@ public class ProductController {
 	@PostMapping
 	public ResponseEntity<ProductDto> addProduct(@Valid @RequestBody ProductDto productDto){
 		
-		System.out.println("Name: " + productDto.getName());
-		System.out.println("Price: " + productDto.getPrice());
-		
+	
 		var product = new Product();
 		BeanUtils.copyProperties(productDto, product);
 		productService.addProduct(product);

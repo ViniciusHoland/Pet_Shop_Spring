@@ -19,7 +19,12 @@ public class Stock {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
+	 // A anotação @OneToMany indica um relacionamento de um-para-muitos entre Stock e ItemStock
+    // Isso significa que um 'Stock' pode ter vários 'ItemStock', e cada 'ItemStock' estará associado a um único 'Stock'
+    // @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL, orphanRemoval = true)
+    // O campo 'mappedBy' é usado para indicar que o mapeamento do relacionamento já é feito pela classe ItemStock
+    // 'cascade = CascadeType.ALL' faz com que todas as operações (persistir, atualizar, remover) realizadas no Stock também sejam propagadas para os ItemStock associados
+    // 'orphanRemoval = true' garante que, caso um ItemStock seja removido da lista de itens de Stock, ele também será removido do banco de dados.
 	 @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemStock> itens = new ArrayList<ItemStock>();
 
