@@ -25,6 +25,8 @@ public class ItemStock {
     private Product product; // o produto no estoque
 
 	private int quantity;
+	
+	private String name;
 
 	public ItemStock() {
 	
@@ -32,11 +34,12 @@ public class ItemStock {
 
 
 
-	public ItemStock(Stock stock, int quantity, Product product) {
+	public ItemStock(Stock stock, int quantity, Product product, String name) {
 		super();
 		this.stock = stock;
 		this.quantity = quantity;
 		this.product = product;
+		this.name = name;
 	}
 
 
@@ -83,6 +86,18 @@ public class ItemStock {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

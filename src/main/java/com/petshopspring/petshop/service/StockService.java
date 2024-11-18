@@ -26,14 +26,15 @@ public class StockService {
 	private ProductRepository productRepository;
 
 	public void addProduct(Long stockId, ItemStockDto itemStockDto) {
-		// pego o stock no caso sempre o mesmo pelo id ZERO - que configurei no importSQL
-		 Optional<Stock> stockOpt = stockRepository.findById(stockId);
-	        if (stockOpt.isEmpty()) {
-	            throw new ResourceNotFoundException("Estoque não encontrado!");
-	        }
+		// pego o stock no caso sempre o mesmo pelo id ZERO - que configurei no
+		// importSQL
+		Optional<Stock> stockOpt = stockRepository.findById(stockId);
+		if (stockOpt.isEmpty()) {
+			throw new ResourceNotFoundException("Estoque não encontrado!");
+		}
 
-	    Stock stock = stockOpt.get();
-	    
+		Stock stock = stockOpt.get();
+
 		// pego o produto passando o id no corpo da requisição
 		Optional<Product> productOpt = productRepository.findById(itemStockDto.getProductId());
 		if (productOpt.isEmpty()) {
@@ -58,29 +59,55 @@ public class StockService {
 		stockRepository.save(stock);
 
 	}
-	
-	
-	
-	public List<ItemStockDto> getAllProducts(){
-	
+
+	public List<ItemStockDto> getAllProducts() {
+
 		List<Stock> result = stockRepository.findAll();
 		List<ItemStockDto> allProducts = new ArrayList<>();
-		
-		for(Stock stock : result) {
+
+		for (Stock stock : result) {
 			// percorrer os itens do estoque
-			for(ItemStock item : stock.getItens()) {
-			
+			for (ItemStock item : stock.getItens()) {
+
 				ItemStockDto dto = new ItemStockDto();
 				dto.setProductId(item.getProduct().getId());
 				dto.setQuantity(item.getQuantity());
 				allProducts.add(dto);
 			}
+
+		}
+
+		return allProducts;
+
+	}
+
+	public ItemStockDto deleteItemStock(Long stockId, Long idItemStock) {
+		// pego o stock no caso sempre o mesmo pelo id ZERO - que configurei no importSQL
+		Optional<Stock> stockOpt = stockRepository.findById(stockId);
+		if (stockOpt.isEmpty()) {
+			throw new ResourceNotFoundException("Estoque não encontrado!");
+		}
+
+		Stock stock = stockOpt.get();
+		
+		ItemStock itemStock = null;
+		
+		for(ItemStock item : stock.getItens()) {
 			
-			
+			if(item.getId().equals(idItemStock)) {
+				itemStock = item;
+				break;
+			}
 		}
 		
-		return allProducts;
-	
+		if (itemStock == null) {
+		    throw new ResourceNotFoundException("Produto não encontrado no estoque!");
+		}
+		
+		stock.getItens().remove(itemStock);
+		stockRepository.save(stock);
+		
+		return new ItemStockDto(itemStock.getProduct().getId(), itemStock.getQuantity());
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
