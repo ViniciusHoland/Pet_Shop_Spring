@@ -45,13 +45,10 @@ public class StockService {
 
 		ItemStock itemStock = new ItemStock();
 		itemStock.setStock(stock);
-		// meu item estoque tem um atributo Stock e toda vez que vou adicionar algo no
-		// estoque
-		// eu procuro primeiro o estoque pelo o id, no caso sempre o mesmo e coloco o
-		// produto e quantidad
+		// meu item estoque tem um atributo Stock e toda vez que vou adicionar algo no estoque
+		// eu procuro primeiro o estoque pelo o id, no caso sempre o mesmo e coloco o  produto e quantidad
 		// no item estoque. depois o stock vai adicionar o itemestoque na lista e depois
-		// vai chamar o
-		// repository para salvar no banco
+		// vai chamar o repository para salvar no banco
 		itemStock.setProduct(product);
 		itemStock.setQuantity(itemStockDto.getQuantity());
 
@@ -62,11 +59,13 @@ public class StockService {
 
 	public List<ItemStockDto> getAllProducts() {
 
+		//ate o momento somente vai ter um estoque no caso com ID 0 
 		List<Stock> result = stockRepository.findAll();
 		List<ItemStockDto> allProducts = new ArrayList<>();
 
 		for (Stock stock : result) {
 			// percorrer os itens do estoque
+			
 			for (ItemStock item : stock.getItens()) {
 
 				ItemStockDto dto = new ItemStockDto();
